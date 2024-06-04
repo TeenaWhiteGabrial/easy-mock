@@ -1,2 +1,3 @@
-# easy-mock
-a nodejs server with koa and mongoDB 
+# 2024.06.04
+
+使用本地mongodb数据库
