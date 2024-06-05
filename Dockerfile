@@ -10,6 +10,10 @@ COPY package*.json ./
 # 安装pnpm 
 RUN npm install pnpm -g
 
+# pnpm 全局设置
+RUN pnpm setup
+
+
 # 安装pm2
 RUN pnpm install pm2 -g
 
