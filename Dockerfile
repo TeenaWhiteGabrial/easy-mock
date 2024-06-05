@@ -14,10 +14,6 @@ RUN npm install pnpm -g
 RUN mkdir -p /usr/local/bin
 RUN pnpm install pm2 -g --global-bin-dir=/usr/local/bin
 
-
-# 安装pm2
-RUN pnpm install pm2 -g
-
 # 安装项目依赖
 RUN pnpm install
 
