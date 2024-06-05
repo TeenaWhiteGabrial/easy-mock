@@ -29,4 +29,4 @@ COPY --from=builder /usr/src/app /usr/src/app
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2-runtime", "start", "dist/app.js", "--only", "test"]
+CMD ["pm2", "start", "dist/app.js", "--only", "test"]
