@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2-runtime", "start", "src/config/pm2.config.js", "--only", "test"]
+CMD ["pm2-runtime", "start", "/usr/src/app/src/config/pm2.config.js", "--only", "test"]
