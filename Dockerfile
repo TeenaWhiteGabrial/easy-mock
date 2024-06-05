@@ -10,11 +10,11 @@ COPY package*.json ./
 # 安装pnpm 
 RUN npm install pnpm -g
 
-# 安装项目依赖
-RUN pnpm install
-
 # 安装pm2
 RUN pnpm install pm2 -g
+
+# 安装项目依赖
+RUN pnpm install
 
 # 复制项目文件到容器中
 COPY . .
@@ -35,4 +35,4 @@ COPY --from=builder /usr/src/app /usr/src/app
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pnpm", "run", "test"]
+CMD ["pm2", "start", "dist/app.js", "--only", "test"]
