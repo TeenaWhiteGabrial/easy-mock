@@ -19,11 +19,11 @@ export const DATABASE = {
 
   // 阿里云环境
   production: {
-    dbName: "xx",
-    user: "xx",
-    password: "x",
-    host: "x",
-    port: 3306,
+    dbName: "easy-mock",
+    user: "topaz",
+    password: "iip2021A%3Fptjsb",
+    host: "localhost",
+    port: 27017,
   },
 };
 
@@ -71,5 +71,5 @@ export const WX_MINI = {
 
 // 全局参数
 export const FIXED_KEY = {
-  port: 3232,
+  port: 3000,
 };

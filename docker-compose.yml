@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my-awesome-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    environment:
+      NODE_ENV: production
+      MONGO_USER: topaz
+      MONGO_PASSWORD: iip2021A%3Fptjsb
+      MONGO_HOST: mongo  # 使用容器名作为主机名
+      MONGO_PORT: 27017
+      MONGO_DB_NAME: easy-mock
+    volumes:
+      - .:/usr/src/app
+    command: ["pm2-runtime", "start", "src/config/pm2.config.js", "--only", "test"]
+
+  mongo:
+    image: mongo:6.0.2
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: topaz
+      MONGO_INITDB_ROOT_PASSWORD: iip2021A%3Fptjsb
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
