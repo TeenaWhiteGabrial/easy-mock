@@ -5,6 +5,10 @@ GIT_REPO="https://github.com/TeenaWhiteGabrial/easy-mock.git"
 APP_DIR="/path/to/your/app"
 APP_BRANCH="v1.0"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
+APP_PORT=3000  # 你的应用服务端口
+MONGO_PORT=27017  # MongoDB服务端口
+APP_CONTAINER_NAME="my-awesome-app"  # 应用容器名称
+MONGO_CONTAINER_NAME="mongodb"  # MongoDB容器名称
 
 # 检查并删除已存在的目录
 if [ -d "$APP_DIR" ]; then
@@ -28,6 +32,36 @@ fi
 # 停止并移除现有的 Docker 容器
 echo "Stopping and removing existing Docker containers..."
 docker-compose -f "$DOCKER_COMPOSE_FILE" down
+
+# 检查并停止占用APP_PORT的进程
+echo "Checking for processes using port $APP_PORT..."
+sudo lsof -i :$APP_PORT | grep LISTEN
+if [ $? -eq 0 ]; then
+  echo "Port $APP_PORT is in use. Stopping the process using it."
+  sudo lsof -ti :$APP_PORT | xargs sudo kill -9
+fi
+
+# 检查并停止占用MONGO_PORT的进程
+echo "Checking for processes using port $MONGO_PORT..."
+sudo lsof -i :$MONGO_PORT | grep LISTEN
+if [ $? -eq 0 ]; then
+  echo "Port $MONGO_PORT is in use. Stopping the process using it."
+  sudo lsof -ti :$MONGO_PORT | xargs sudo kill -9
+fi
+
+# 检查并删除现有的应用容器
+if [ "$(docker ps -aq -f name=$APP_CONTAINER_NAME)" ]; then
+  echo "Removing existing application container..."
+  docker stop $APP_CONTAINER_NAME
+  docker rm $APP_CONTAINER_NAME
+fi
+
+# 检查并删除现有的 MongoDB 容器
+if [ "$(docker ps -aq -f name=$MONGO_CONTAINER_NAME)" ]; then
+  echo "Removing existing MongoDB container..."
+  docker stop $MONGO_CONTAINER_NAME
+  docker rm $MONGO_CONTAINER_NAME
+fi
 
 # 构建和启动容器
 echo "Building and starting Docker containers..."
