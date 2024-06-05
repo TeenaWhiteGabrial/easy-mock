@@ -7,17 +7,20 @@ WORKDIR /usr/src/app
 # 复制package.json和package-lock.json文件
 COPY package*.json ./
 
+# 安装pnpm 
+RUN npm install pnpm -g
+
 # 安装项目依赖
-RUN npm install
+RUN pnpm install
 
 # 安装pm2
-RUN npm install pm2 -g
+RUN pnpm install pm2 -g
 
 # 复制项目文件到容器中
 COPY . .
 
 # 编译 TypeScript 项目
-RUN npm run build
+RUN pnpm run build
 
 # 第二个阶段，用于生成最终镜像
 FROM node:20.8.1
@@ -32,4 +35,4 @@ COPY --from=builder /usr/src/app /usr/src/app
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2", "start", "dist/app.js", "--only", "test"]
+CMD ["pnpm", "run", "test"]
