@@ -10,7 +10,7 @@ COPY package*.json ./
 # 安装项目依赖
 RUN npm install
 
-RUN npm run build
+RUN npm run build:docker
 # 复制项目文件到容器中
 COPY . .
 
