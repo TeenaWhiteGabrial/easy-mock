@@ -2,7 +2,7 @@
 
 # 定义变量
 GIT_REPO="https://github.com/TeenaWhiteGabrial/easy-mock.git"
-APP_DIR="/path/to/your/app"
+APP_DIR="/usr/src/app"
 APP_BRANCH="v1.0"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 APP_PORT=3000  # 你的应用服务端口
