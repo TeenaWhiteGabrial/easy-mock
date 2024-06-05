@@ -10,7 +10,7 @@ COPY package*.json ./
 # 安装pnpm 
 RUN npm install pnpm -g
 
-# pnpm 全局设置
+# pnpm 全局安装 pm2
 RUN mkdir -p /usr/local/bin
 RUN pnpm install pm2 -g --global-bin-dir=/usr/local/bin
 
