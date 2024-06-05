@@ -6,7 +6,8 @@ WORKDIR /usr/src/app
 
 # 复制package.json和package-lock.json文件
 COPY package*.json ./
-
+# 安装pm2 
+RUN npm install pm2 -g
 # 安装项目依赖
 RUN npm install
 
