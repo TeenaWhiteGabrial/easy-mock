@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "build": "rimraf ./dist && tsup ./src/app.ts --dts --format cjs,esm",
+    "build": "rimraf dist && tsup src/app.ts --dts --format cjs,esm",
     "test": "pm2 start dist/app.js --only test",
     "prod": "pm2 start dist/app.js --only production",
     "stop": "pm2 stop dist/app.js",
