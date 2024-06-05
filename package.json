@@ -6,10 +6,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/app.ts",
-    "test": "pm2 start src/config/pm2.config.js --only test",
-    "prod": "pm2 start src/config/pm2.config.js --only production",
-    "stop": "pm2 stop src/config/pm2.config.js",
-    "delete": "pm2 delete src/config/pm2.config.js",
+    "build": "rimraf ./dist && tsup ./src/app.ts --dts --format cjs,esm",
+    "test": "pm2 start dist/app.js --only test",
+    "prod": "pm2 start dist/app.js --only production",
+    "stop": "pm2 stop dist/app.js",
+    "delete": "pm2 delete dist/app.js",
     "list": "pm2 list",
     "tsc": "tsc && npm run copy-package && npm run copy-assets",
     "copy-package": "cp package.json dist/",
@@ -43,6 +44,8 @@
     "nodemon": "^3.0.1",
     "prettier": "^3.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "rimraf": "^5.0.1",
+    "tsup": "^7.1.0"
   }
 }
