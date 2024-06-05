@@ -31,8 +31,5 @@ COPY --from=builder /usr/src/app /usr/src/app
 # 暴露应用端口
 EXPOSE 3000
 
-# 在容器中安装项目依赖
-RUN pnpm install
-
 # 使用PM2启动应用
 CMD ["pnpm", "run", "test"]
