@@ -10,9 +10,9 @@ COPY package*.json ./
 # 安装pnpm 
 RUN npm install pnpm -g
 
-# pnpm 全局安装 pm2
-RUN mkdir -p /usr/local/bin
-RUN pnpm install pm2 -g --global-bin-dir=/usr/local/bin
+# # pnpm 全局安装 pm2
+# RUN mkdir -p /usr/local/bin
+# RUN pnpm install pm2 -g --global-bin-dir=/usr/local/bin
 
 # 安装项目依赖
 RUN pnpm install
@@ -36,4 +36,4 @@ COPY --from=builder /usr/src/app /usr/src/app
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2", "start", "dist/app.js", "--only", "test"]
+CMD ["npx","pm2", "start", "dist/app.js", "--only", "test"]

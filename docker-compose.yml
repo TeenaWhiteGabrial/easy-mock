@@ -19,7 +19,7 @@ services:
       MONGO_DB_NAME: easy-mock
     volumes:
       - .:/usr/src/app
-    command: ["pm2", "start", "dist/app.js", "--only", "test"]
+    command: ["npx","pm2", "start", "dist/app.js", "--only", "test"]
 
   mongo:
     image: mongo:6.0.2
