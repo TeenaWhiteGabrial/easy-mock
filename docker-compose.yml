@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      target: builder  # 指定构建阶段为 builder
     container_name: topaz-app
     ports:
       - "3100:3000"
