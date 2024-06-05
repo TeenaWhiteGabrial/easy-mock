@@ -13,13 +13,11 @@ RUN npm install pnpm -g
 # 安装项目依赖
 RUN pnpm install
 
-# 编译 TypeScript 项目
-RUN pnpm run build
-
 # 复制项目文件到容器中
 COPY . .
 
-
+# 编译 TypeScript 项目
+RUN pnpm run build
 
 # 第二个阶段，用于生成最终镜像
 FROM node:20.8.1
