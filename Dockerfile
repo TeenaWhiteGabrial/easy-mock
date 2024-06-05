@@ -10,8 +10,8 @@ COPY package*.json ./
 # 安装项目依赖
 RUN npm install
 
-# 安装pm2-runtime
-RUN npm install pm2-runtime -g
+# 安装pm2
+RUN npm install pm2 -g
 
 # 复制项目文件到容器中
 COPY . .
@@ -32,4 +32,4 @@ COPY --from=builder /usr/src/app /usr/src/app
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2-runtime", "start", "dist/app.js", "--only", "test"]
+CMD ["pm2", "start", "dist/app.js", "--only", "test"]
