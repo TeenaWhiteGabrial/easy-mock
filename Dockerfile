@@ -31,5 +31,8 @@ COPY --from=builder /usr/src/app /usr/src/app
 # 暴露应用端口
 EXPOSE 3000
 
+# 写日志
+RUN ls -l /usr/src/app
+
 # 使用PM2启动应用
 CMD ["pnpm", "run", "test"]
