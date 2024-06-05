@@ -6,11 +6,11 @@ WORKDIR /usr/src/app
 
 # 复制package.json和package-lock.json文件
 COPY package*.json ./
-# 安装pm2 
-RUN npm install pm2 -g
+
 # 安装项目依赖
 RUN npm install
 
+RUN npm build
 # 复制项目文件到容器中
 COPY . .
 
@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2-runtime", "start", "src/config/pm2.config.js", "--only", "test"]
+CMD ["pm2-runtime", "start", "dist/app.js", "--only", "test"]
