@@ -4,11 +4,11 @@ FROM node:20.8.1 AS builder
 # 设置工作目录
 WORKDIR /usr/src/app
 
-# 复制package.json和package-lock.json文件
-COPY package*.json ./
+# 复制package.json和pnpm-lock.yaml文件
+COPY package*.json pnpm-lock.yaml ./
 
 # 安装pnpm 
-RUN npm install pnpm -g
+RUN npm install -g pnpm
 
 # 安装项目依赖
 RUN pnpm install
@@ -28,11 +28,11 @@ WORKDIR /usr/src/app
 # 从第一个阶段复制构建产物
 COPY --from=builder /usr/src/app /usr/src/app
 
+# 安装pm2
+RUN npm install -g pm2
+
 # 暴露应用端口
 EXPOSE 3000
 
-# 安装项目依赖
-RUN pnpm install
-
 # 使用PM2启动应用
-CMD ["pnpm", "run", "test"]
+CMD ["pm2-runtime", "start", "dist/index.js"]

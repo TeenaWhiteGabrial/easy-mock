@@ -2,10 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: builder  # 指定构建阶段为 builder
+    build: .
     container_name: topaz-app
     ports:
       - "3100:3000"
@@ -20,7 +17,6 @@ services:
       MONGO_DB_NAME: easy-mock
     volumes:
       - .:/usr/src/app
-    command: ["pnpm", "run", "test"]
 
   mongo:
     image: mongo:6.0.2
