@@ -27,13 +27,11 @@ WORKDIR /usr/src/app
 
 # 从第一个阶段复制构建产物
 COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 
 # 安装pm2
 RUN npm install -g pm2
-
-# 安装项目运行时依赖（如果需要）
-RUN pnpm install --prod
 
 # 暴露应用端口
 EXPOSE 3000
