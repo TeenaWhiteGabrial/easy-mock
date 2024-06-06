@@ -46,8 +46,9 @@ RUN echo "You are now inside the container. Use 'ls -l /usr/src/app' to see the 
 # 安装pnpm
 RUN npm install -g pnpm
 
-# 安装pm2
-RUN pnpm install -g pm2
+# pnpm 全局安装 pm2
+RUN mkdir -p /usr/local/bin
+RUN pnpm install pm2 -g --global-bin-dir=/usr/local/bin
 
 RUN pnpm install
 
