@@ -16,7 +16,8 @@ services:
       MONGO_PORT: 27017
       MONGO_DB_NAME: easy-mock
     volumes:
-      - .:/usr/src/app
+      - .:/usr/src/app # 目录映射
+      - ./logs:/usr/src/app/logs  # 将容器内的日志目录映射到本地主机的 logs 目录
 
   mongo:
     image: mongo:6.0.2

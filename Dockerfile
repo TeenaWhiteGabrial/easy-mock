@@ -45,5 +45,9 @@ RUN ls -l dist
 # 进入容器后的提示信息
 RUN echo "You are now inside the container. Use 'ls -l /usr/src/app' to see the directory structure."
 
+RUN pnpm install
+
+RUN pnpm run build
+
 # 使用PM2启动应用
 CMD ["pm2-runtime", "start", "dist/app.js"]
