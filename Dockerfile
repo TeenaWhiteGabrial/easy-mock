@@ -16,11 +16,13 @@ RUN npm install -g pnpm
 # 安装项目依赖
 RUN pnpm install
 
+# 复制项目文件到容器中
+COPY . /usr/src/app/
+
 # 编译 TypeScript 项目
 RUN pnpm run build
 
-# 复制项目文件到容器中
-COPY . /usr/src/app/
+
 
 # 暴露应用端口
 EXPOSE 3000
