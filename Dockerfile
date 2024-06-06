@@ -33,8 +33,7 @@ COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 
-# 安装pm2
-RUN npm install -g pm2
+
 
 # 暴露应用端口
 EXPOSE 3000
@@ -44,6 +43,11 @@ RUN ls -l dist
 
 # 进入容器后的提示信息
 RUN echo "You are now inside the container. Use 'ls -l /usr/src/app' to see the directory structure."
+# 安装pnpm
+RUN npm install -g pnpm
+
+# 安装pm2
+RUN pnpm install -g pm2
 
 RUN pnpm install
 
