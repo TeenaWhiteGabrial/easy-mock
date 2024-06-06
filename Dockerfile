@@ -13,6 +13,10 @@ COPY package*.json pnpm-lock.yaml /usr/src/app/
 # 安装pnpm
 RUN npm install -g pnpm
 
+# pnpm 全局安装 pm2
+RUN mkdir -p /usr/local/bin
+RUN pnpm install pm2 -g --global-bin-dir=/usr/local/bin
+
 # 安装项目依赖
 RUN pnpm install
 
