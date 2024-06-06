@@ -29,6 +29,7 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/src ./src
 
 # 安装pm2
 RUN npm install -g pm2
@@ -37,4 +38,4 @@ RUN npm install -g pm2
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2-runtime", "start", "dist/app.js"]
+CMD ["npm", "run", "dev"]
