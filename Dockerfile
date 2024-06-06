@@ -35,4 +35,4 @@ RUN npm install -g pm2
 EXPOSE 3000
 
 # 使用PM2启动应用
-CMD ["pm2-runtime", "start", "dist/index.js"]
+CMD ["pm2-runtime", "start", "dist/src/index.js"]
