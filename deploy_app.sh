@@ -72,23 +72,23 @@ if [ "$(docker ps -aq -f name=$MONGO_CONTAINER_NAME)" ]; then
   docker rm $MONGO_CONTAINER_NAME
 fi
 
-# 构建和启动容器
-echo "Building and starting Docker containers..."
-docker-compose -f "$DOCKER_COMPOSE_FILE" up --build -d
+# # 构建和启动容器
+# echo "Building and starting Docker containers..."
+# docker-compose -f "$DOCKER_COMPOSE_FILE" up --build -d
 
-# 检查是否成功启动容器
-if [ $? -ne 0 ]; then
-  echo "Failed to start Docker containers. Please check your Docker Compose configuration."
-  exit 1
-fi
+# # 检查是否成功启动容器
+# if [ $? -ne 0 ]; then
+#   echo "Failed to start Docker containers. Please check your Docker Compose configuration."
+#   exit 1
+# fi
 
-# 检查应用容器状态
-docker ps -a | grep $APP_CONTAINER_NAME
-if [ $? -ne 0 ]; then
-  echo "Application container failed to start. Checking logs..."
-  docker logs $APP_CONTAINER_NAME
-  exit 1
-fi
+# # 检查应用容器状态
+# docker ps -a | grep $APP_CONTAINER_NAME
+# if [ $? -ne 0 ]; then
+#   echo "Application container failed to start. Checking logs..."
+#   docker logs $APP_CONTAINER_NAME
+#   exit 1
+# fi
 
-# 打印成功提示信息
-echo "Application started successfully!"
+# # 打印成功提示信息
+# echo "Application started successfully!"
