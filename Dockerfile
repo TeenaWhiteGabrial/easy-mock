@@ -19,6 +19,9 @@ COPY . .
 # 编译 TypeScript 项目
 RUN pnpm run build
 
+# 确认构建产物是否存在
+RUN ls -l dist
+
 # 第二个阶段，用于生成最终镜像
 FROM node:20.8.1
 
@@ -29,7 +32,6 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist ./dist
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
-COPY --from=builder /usr/src/app/src ./src
 
 # 安装pm2
 RUN npm install -g pm2
@@ -37,5 +39,11 @@ RUN npm install -g pm2
 # 暴露应用端口
 EXPOSE 3000
 
+# 验证构建产物是否成功复制
+RUN ls -l dist
+
+# 进入容器后的提示信息
+RUN echo "You are now inside the container. Use 'ls -l /usr/src/app' to see the directory structure."
+
 # 使用PM2启动应用
-CMD ["npm", "run", "dev"]
+CMD ["pm2-runtime", "start", "dist/app.js"]
