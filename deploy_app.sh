@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # 定义变量
 GIT_REPO="https://github.com/TeenaWhiteGabrial/easy-mock.git"
 APP_DIR="/usr/src/code/easy-mock"
@@ -10,51 +8,34 @@ MONGO_PORT=27017  # MongoDB服务端口
 APP_CONTAINER_NAME="topaz-app"  # 应用容器名称
 MONGO_CONTAINER_NAME="mongodb"  # MongoDB容器名称
 
-# 配置 Git 缓存和超时设置
-git config --global http.postBuffer 524288000
-git config --global http.lowSpeedLimit 0
-git config --global http.lowSpeedTime 999999
-
-# 检查并删除已存在的目录
-if [ -d "$APP_DIR" ]; then
-  echo "Directory $APP_DIR already exists. Removing it."
-  rm -rf "$APP_DIR"
-fi
+# 删除代码仓库
+rm -rf "$APP_DIR"
 
 # 尝试克隆 Git 仓库
-echo "Cloning Git repository..."
+echo "---------------下载仓库代码--------------------"
 git clone --branch "$APP_BRANCH" "$GIT_REPO" "$APP_DIR"
-if [ $? -ne 0 ]; then
-  echo "Failed to clone Git repository. Please check your network connection."
-  exit 1
-fi
 
 # 进入应用目录
-cd "$APP_DIR" || exit
-
-# 检查是否成功进入应用目录
-if [ $? -ne 0 ]; then
-  echo "Failed to enter the application directory. Please check the directory path."
-  exit 1
-fi
+echo "---------------进入应用目录--------------------"
+cd "$APP_DIR"
 
 # 停止并移除现有的 Docker 容器
-echo "Stopping and removing existing Docker containers..."
+echo "---------------停止docker容器--------------------"
 docker-compose -f "$DOCKER_COMPOSE_FILE" down
 
 # 检查并停止占用APP_PORT的进程
-echo "Checking for processes using port $APP_PORT..."
+echo "--------------检查应用端口：$APP_PORT -----------"
 sudo lsof -i :$APP_PORT | grep LISTEN
 if [ $? -eq 0 ]; then
-  echo "Port $APP_PORT is in use. Stopping the process using it."
+  echo "-------------- 端口 $APP_PORT 被占用, 删除$APP_PORT 端口------------"
   sudo lsof -ti :$APP_PORT | xargs sudo kill -9
 fi
 
 # 检查并停止占用MONGO_PORT的进程
-echo "Checking for processes using port $MONGO_PORT..."
+echo "--------------检查mongoDB端口: $MONGO_PORT -----------"
 sudo lsof -i :$MONGO_PORT | grep LISTEN
 if [ $? -eq 0 ]; then
-  echo "Port $MONGO_PORT is in use. Stopping the process using it."
+  echo "-------------- 端口 $MONGO_PORT 被占用, 删除 $MONGO_PORT 端口------------"
   sudo lsof -ti :$MONGO_PORT | xargs sudo kill -9
 fi
 
@@ -73,7 +54,7 @@ if [ "$(docker ps -aq -f name=$MONGO_CONTAINER_NAME)" ]; then
 fi
 
 # 构建和启动容器
-echo "Building and starting Docker containers..."
+echo "--------------构建并启动容器中-------------"
 docker-compose -f "$DOCKER_COMPOSE_FILE" up --build -d
 
 # 检查是否成功启动容器
