@@ -12,8 +12,6 @@ WORKDIR /usr/src/app
 # 不会受到WORKDIR设置影响，即：/usr/src/app/usr/src/app/ 
 COPY package*.json pnpm-lock.yaml /usr/src/app/ 
 
-# 添加淘宝源，使用 RUN 指令运行 npm config set registry 命令
-RUN npm config set registry https://registry.npm.taobao.org/
 # 安装依赖
 RUN npm install
 
