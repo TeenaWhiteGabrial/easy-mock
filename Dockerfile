@@ -1,35 +1,26 @@
-# 使用官方Node.js镜像，并指定版本20.8.1
+# 制作镜像，一切操作都是在容器内
+# 使用官方Node.js镜像，并指定版本20.8.1。
 FROM node:20.8.1
 
-# 在容器内创建目录
+# 创建一个/usr/src/app文件夹，-p标识如果目录不存在，则递归创建
 RUN mkdir -p /usr/src/app
 
-# 设置工作目录
+# 将工作目录设置为 /usr/src/app，即后续的命令都在这个目录下执行。这样做可以简化后续指令中的路径，避免重复写路径
 WORKDIR /usr/src/app
 
-# 复制package.json和pnpm-lock.yaml文件
-COPY package*.json pnpm-lock.yaml /usr/src/app/
+# 将主机上的 package.json、package-lock.json 和 pnpm-lock.yaml 文件复制到容器内的 /usr/src/app/ 目录下。这些文件包含了应用程序的依赖信息。
+# 不会受到WORKDIR设置影响，即：/usr/src/app/usr/src/app/ 
+COPY package*.json pnpm-lock.yaml /usr/src/app/ 
 
-# 安装pnpm
-RUN npm install -g pnpm
+# 添加淘宝源，使用 RUN 指令运行 npm config set registry 命令
+RUN npm config set registry https://registry.npm.taobao.org/
+# 安装依赖
+RUN npm install
 
-# pnpm 全局安装 pm2
-RUN mkdir -p /usr/local/bin
-RUN pnpm install pm2 -g --global-bin-dir=/usr/local/bin
+COPY src /usr/src/app/
 
-# 安装项目依赖
-RUN pnpm install
+RUN npm run build
 
-# 复制项目文件到容器中
-COPY . /usr/src/app/
-
-# 编译 TypeScript 项目
-RUN pnpm run build
-
-
-
-# 暴露应用端口
 EXPOSE 3000
 
-# 使用PM2启动应用
 CMD ["pm2-runtime", "start", "dist/app.js"]

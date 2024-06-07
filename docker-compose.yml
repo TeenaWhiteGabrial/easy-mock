@@ -1,32 +1,37 @@
+version: '3.8' # 指定使用的 Docker Compose 文件格式的版本
+
 services:
   app:
-    build: .
-    container_name: topaz-app
+    build: . # 从当前目录（即包含 docker-compose.yml 文件的目录）中的 Dockerfile 构建镜像。
+    container_name: topaz-app # 容器名称
     ports:
-      - "3100:3000"
+      - "3100:3000" # 主机3100端口映射容器内的3000端口
     depends_on:
       - mongo
     environment:
-      NODE_ENV: production
-      MONGO_USER: topaz
-      MONGO_PASSWORD: iip2021A%3Fptjsb
-      MONGO_HOST: mongo  # 使用容器名作为主机名
+      NODE_ENV: production # 制定生产环境
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD} # 使用密码文件
+      MONGO_HOST: mongodb  # 使用mongo的容器名
       MONGO_PORT: 27017
       MONGO_DB_NAME: easy-mock
     volumes:
-      - .:/usr/src/app # 目录映射
-      - ./logs:/usr/src/app/logs  # 将容器内的日志目录映射到本地主机的 logs 目录
+      - .:/usr/src/app # 绑定挂载，目录映射。将当前目录（即包含 docker-compose.yml 文件的目录）挂载到容器内的 /usr/src/app 目录
 
   mongo:
-    image: mongo:6.0.2
+    image: mongo:6.0.2 # 会自动下载并安装配置文件中指定的镜像
     container_name: mongodb
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: topaz
-      MONGO_INITDB_ROOT_PASSWORD: iip2021A%3Fptjsb
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
     volumes:
-      - mongo-data:/data/db
-
+      - mongo-data:/data/db # 命名卷。Docker 会自动在主机上创建并管理这个卷，并将其挂载到容器内的 /data/db 目录。
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 volumes:
-  mongo-data:
+  mongo-data: # 定义命名卷。这个卷在主机上，但是在容器的管理之下。即使容器被删除，卷中的数据依然存在，可以在新容器中重新挂载使用。

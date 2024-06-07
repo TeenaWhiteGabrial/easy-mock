@@ -2,10 +2,10 @@
 
 # 定义变量
 GIT_REPO="https://github.com/TeenaWhiteGabrial/easy-mock.git"
-APP_DIR="/usr/src/app"
+APP_DIR="/usr/src/code/easy-mock"
 APP_BRANCH="v1.0"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
-APP_PORT=3000  # 你的应用服务端口
+APP_PORT=3100  # 你的应用服务端口
 MONGO_PORT=27017  # MongoDB服务端口
 APP_CONTAINER_NAME="topaz-app"  # 应用容器名称
 MONGO_CONTAINER_NAME="mongodb"  # MongoDB容器名称
@@ -72,23 +72,23 @@ if [ "$(docker ps -aq -f name=$MONGO_CONTAINER_NAME)" ]; then
   docker rm $MONGO_CONTAINER_NAME
 fi
 
-# # 构建和启动容器
-# echo "Building and starting Docker containers..."
-# docker-compose -f "$DOCKER_COMPOSE_FILE" up --build -d
+# 构建和启动容器
+echo "Building and starting Docker containers..."
+docker-compose -f "$DOCKER_COMPOSE_FILE" up --build -d
 
-# # 检查是否成功启动容器
-# if [ $? -ne 0 ]; then
-#   echo "Failed to start Docker containers. Please check your Docker Compose configuration."
-#   exit 1
-# fi
+# 检查是否成功启动容器
+if [ $? -ne 0 ]; then
+  echo "Failed to start Docker containers. Please check your Docker Compose configuration."
+  exit 1
+fi
 
-# # 检查应用容器状态
-# docker ps -a | grep $APP_CONTAINER_NAME
-# if [ $? -ne 0 ]; then
-#   echo "Application container failed to start. Checking logs..."
-#   docker logs $APP_CONTAINER_NAME
-#   exit 1
-# fi
+# 检查应用容器状态
+docker ps -a | grep $APP_CONTAINER_NAME
+if [ $? -ne 0 ]; then
+  echo "Application container failed to start. Checking logs..."
+  docker logs $APP_CONTAINER_NAME
+  exit 1
+fi
 
-# # 打印成功提示信息
-# echo "Application started successfully!"
+# 打印成功提示信息
+echo "Application started successfully!"
