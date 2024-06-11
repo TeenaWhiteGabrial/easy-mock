@@ -13,7 +13,7 @@ export const responseHandler = (ctx: Context) => {
       ctx.body = {
         code: CODE.success.code,
         data: ctx.body,
-        message: CODE.success.message,
+        msg: CODE.success.msg,
       };
     }
   }
@@ -26,13 +26,13 @@ export const errorHandler = (ctx: Koa.Context, next: Koa.Next) => {
       ctx.body = {
         code: err.code,
         data: null,
-        message: err.message,
+        msg: err.message,
       };
     } else {
       ctx.body = {
         code: -1,
         data: null,
-        message: err,
+        msg: err,
       };
     }
 

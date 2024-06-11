@@ -19,6 +19,6 @@ COPY src /usr/src/app/
 
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["pm2-runtime", "start", "dist/app.js"]

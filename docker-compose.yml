@@ -5,7 +5,7 @@ services:
     build: . # 从当前目录（即包含 docker-compose.yml 文件的目录）中的 Dockerfile 构建镜像。
     container_name: topaz-app # 容器名称
     ports:
-      - "3100:3000" # 主机3100端口映射容器内的3000端口
+      - "3100:8080" # 主机3100端口映射容器内的8080端口
     depends_on:
       - mongo
     environment:

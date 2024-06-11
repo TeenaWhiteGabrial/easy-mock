@@ -1,4 +1,5 @@
-import controllers from "../controllers/user";
+import userController from "../controllers/user";
+import siteController from "../controllers/site"
 import koaRouter from "koa-router";
 import { methodType } from "./enum"
 
@@ -10,24 +11,30 @@ const service = "/user"
 
 const routerList = [
   {
-    path: `${type}${service}/info`,
+    path: `${type}/user/info`,
     method: methodType.POST,
-    action: controllers.getUser,
+    action: userController.getUser,
   },
   {
-    path: `${type}${service}/insert`,
+    path: `${type}/user/insert`,
     method: methodType.POST,
-    action: controllers.insertUser,
+    action: userController.insertUser,
   },
   {
-    path: `${type}${service}/delete`,
+    path: `${type}/user/delete`,
     method: methodType.POST,
-    action: controllers.deleteUser,
+    action: userController.deleteUser,
   },
   {
-    path: `${type}${service}/update`,
+    path: `${type}/user/update`,
     method: methodType.POST,
-    action: controllers.updateUser,
+    action: userController.updateUser,
+  },
+  /** 获取网站信息 */
+  {
+    path: `${type}/site/info`,
+    method: methodType.GET,
+    action: siteController.getSite,
   },
 ]
 

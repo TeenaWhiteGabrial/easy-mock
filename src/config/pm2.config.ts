@@ -23,7 +23,7 @@ module.exports = {
         "log",
       ],
       max_memory_restart: "300M",
-      restart_delay: "3000",
+      restart_delay: "8080",
       env: {
         NODE_ENV: ENV.production, //process.env.NODE_ENV值
       },

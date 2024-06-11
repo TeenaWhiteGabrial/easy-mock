@@ -71,5 +71,5 @@ export const WX_MINI = {
 
 // 全局参数
 export const FIXED_KEY = {
-  port: 3000,
+  port: 8080,
 };
