@@ -41,14 +41,14 @@ fi
 
 # 检查并删除现有的应用容器
 if [ "$(docker ps -aq -f name=$APP_CONTAINER_NAME)" ]; then
-  echo "Removing existing application container..."
+  echo "-----------应用容器已启用，正在停止-------------------"
   docker stop $APP_CONTAINER_NAME
   docker rm $APP_CONTAINER_NAME
 fi
 
 # 检查并删除现有的 MongoDB 容器
 if [ "$(docker ps -aq -f name=$MONGO_CONTAINER_NAME)" ]; then
-  echo "Removing existing MongoDB container..."
+  echo "----------数据库容器已启用，正在停止---------------"
   docker stop $MONGO_CONTAINER_NAME
   docker rm $MONGO_CONTAINER_NAME
 fi
@@ -59,17 +59,9 @@ docker-compose -f "$DOCKER_COMPOSE_FILE" up --build -d
 
 # 检查是否成功启动容器
 if [ $? -ne 0 ]; then
-  echo "Failed to start Docker containers. Please check your Docker Compose configuration."
-  exit 1
-fi
-
-# 检查应用容器状态
-docker ps -a | grep $APP_CONTAINER_NAME
-if [ $? -ne 0 ]; then
-  echo "Application container failed to start. Checking logs..."
-  docker logs $APP_CONTAINER_NAME
+  echo "---------------启动失败，请检查-----------------"
   exit 1
 fi
 
 # 打印成功提示信息
-echo "Application started successfully!"
+echo "----------------启动成功-------------"
