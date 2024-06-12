@@ -21,8 +21,8 @@ export const DATABASE = {
   production: {
     dbName: "easy-mock",
     user: "topaz",
-    password: "iip2021A%3Fptjsb",
-    host: "localhost",
+    password: "ipcMasterTopazzz",
+    host: "8.149.128.69",
     port: 27017,
   },
 };
