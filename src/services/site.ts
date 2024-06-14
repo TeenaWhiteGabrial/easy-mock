@@ -10,6 +10,6 @@ export default class SiteService {
             projection: { name: 1, contacts: 1, icon: 1, logo: 1, backlogo: 1, description: 1 }
         })
 
-        return site || null
+        return site || {}
     }
 }
