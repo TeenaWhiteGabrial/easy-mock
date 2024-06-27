@@ -18,6 +18,7 @@
     "copy-assets": "cp src/assets/apiclient_key.pem src/assets/apiclient_cert.pem dist/src/assets/"
   },
   "dependencies": {
+    "@types/koa-cors": "^0.0.6",
     "axios": "^1.6.0",
     "crypto": "^1.0.1",
     "dayjs": "^1.11.10",
@@ -25,6 +26,7 @@
     "jsonwebtoken": "^9.0.1",
     "koa": "^2.14.2",
     "koa-body": "^6.0.1",
+    "koa-cors": "^0.0.16",
     "koa-router": "^12.0.0",
     "log4js": "^6.9.1",
     "mime-types": "^2.1.35",
@@ -44,9 +46,9 @@
     "eslint": "^8.45.0",
     "nodemon": "^3.0.1",
     "prettier": "^3.0.0",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.6",
     "rimraf": "^5.0.1",
-    "tsup": "^7.1.0"
+    "ts-node": "^10.9.1",
+    "tsup": "^7.1.0",
+    "typescript": "^5.1.6"
   }
 }

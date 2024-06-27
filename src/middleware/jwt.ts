@@ -7,18 +7,16 @@ import { PLATFORM } from "../config/constant";
 
 /** 校验Token是否合法 */
 export const jwtMiddlewareDeal = async (ctx: Context, next: Next) => {
-  const token = ctx.request.headers.token;
+  const token = ctx.request.headers.authorization;
   if (typeof token === "string") {
     try {
       const userId = decodeToken(token);
-      // const userInfo = await getUserInfoByIdService({ id: Number(userId) });
-      const userInfo = '';
 
-      if (!userInfo) {
+      if (!userId) {
         throw CODE.tokenFailed;
-      } else {
-        ctx.userId = Number(userId);
-        ctx.userInfo = userInfo;
+      }
+      else {
+        ctx.userId = userId;
       }
     } catch (error) {
       throw CODE.tokenFailed;

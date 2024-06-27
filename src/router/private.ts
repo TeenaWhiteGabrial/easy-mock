@@ -1,24 +1,35 @@
+import authController from "../controllers/auth";
+import userController from "../controllers/user";
 import koaRouter from "koa-router";
-import controllers from "../controllers/user";
+import { methodType } from "../type/enum"
 import { jwtMiddlewareDeal, platformMiddlewareDeal } from "../middleware/jwt";
 
 const router = new koaRouter();
-/** 私密接口，需要校验token和platform */
-router.use(platformMiddlewareDeal);
+/** 管理端，需要Token的相关接口 */
 router.use(jwtMiddlewareDeal);
 
-const platform = "/game";
+const routerList = [
+  /** 登出 */
+  {
+    path: `/auth/logout`,
+    method: methodType.POST,
+    action: authController.logout,
+  },
+  /** 获取用户信息 */
+  {
+    path: `/user/info`,
+    method: methodType.POST,
+    action: userController.getUser,
+  },
+  /** 获取角色权限菜单 */
+  {
+    path: `/user/roles/menus`,
+    method: methodType.POST,
+    action: userController.getMenus,
+  },
+]
 
-const service = {
-  global: "",
-  user: "/user",
-};
-
-
-// router.post(
-//   `${platform}${service.user}/test`,
-//   controllers.app_user.testApi,
-// );
-
-
+routerList.forEach((route) => {
+  router[route.method](route.path, route.action)
+})
 export default router;

@@ -1,13 +1,17 @@
 import Koa from "koa";
 import http from "http";
 import koaBody from "koa-body";
+import koaCors from "koa-cors";
 import { getIpAddress } from "./utils/util";
 import { loggerMiddleware } from "./log/log";
 import { FIXED_KEY } from "./config/constant";
-import { privateRouter, publicRouter, openRouter } from "./router";
+import { privateRouter, openRouter } from "./router";
 import { errorHandler, responseHandler } from "./middleware/response";
 
 const app = new Koa();
+
+// 跨域处理
+app.use(koaCors())
 // 日志中间件
 app.use(loggerMiddleware);
 
@@ -18,9 +22,8 @@ app.use(errorHandler);
 app.use(koaBody({ multipart: true }));
 
 // 加载路由
-app.use(publicRouter.routes()).use(publicRouter.allowedMethods()); // 公共路由
-app.use(privateRouter.routes()).use(privateRouter.allowedMethods()); // 权限路由
-app.use(openRouter.routes()).use(openRouter.allowedMethods()); // 公开路由
+app.use(privateRouter.routes()).use(privateRouter.allowedMethods()); // 加载路由
+app.use(openRouter.routes()).use(openRouter.allowedMethods()); // 加载路由
 
 // 请求response处理
 app.use(responseHandler);

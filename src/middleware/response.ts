@@ -21,13 +21,9 @@ export const responseHandler = (ctx: Context) => {
 
 // 这个middleware处理在其它middleware中出现的异常,我们在next()后面进行异常捕获，出现异常直接进入这个中间件进行处理
 export const errorHandler = (ctx: Koa.Context, next: Koa.Next) => {
-  return next().catch((err: { code: any; message: any }) => {
+  return next().catch((err: { code: number; message: any }) => {
     if (typeof err === "object") {
-      ctx.body = {
-        code: err.code,
-        data: null,
-        msg: err.message,
-      };
+      ctx.body = err;
     } else {
       ctx.body = {
         code: -1,

@@ -15,12 +15,7 @@ class UserController {
         ctx.body = '退出成功'
         return next()
     };
-    getRoles = async (ctx: Context, next: Next) => {
-        ctx.body = {
 
-        }
-        return next()
-    }
 }
 
 export default new UserController();

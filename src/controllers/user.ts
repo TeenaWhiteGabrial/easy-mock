@@ -16,8 +16,7 @@ class UserController {
         return next()
     }
     getUser = async (ctx: Context, next: Next) => {
-        const data = ctx.request.body
-        const res = await this.service.getUserInfo(data.userId)
+        const res = await this.service.getUserInfo(ctx.userId)
         ctx.body = res
         return next()
     }
@@ -25,6 +24,12 @@ class UserController {
         const data = ctx.request.body
         const res = await this.service.updateUser(data.userId, data)
         ctx.body = res
+        return next()
+    }
+    getMenus = async (ctx: Context, next: Next) => {
+        const userinfo = await this.service.getUserInfo(ctx.userId)
+
+        ctx.body = await this.service.getMenus(userinfo?.roles)
         return next()
     }
 }

@@ -1,5 +1,6 @@
 import db from '../utils/pool'
 import { CODE } from "../config/code";
+import { generatorToken } from "../utils/util";
 
 export default class SiteService {
     /** 查询用户名和密码 */
@@ -8,11 +9,15 @@ export default class SiteService {
         const site = await cl.findOne({
             username,
             password
+        }, {
+            projection: { userid: 1 }
         })
         if (site) {
-            return '登录成功'
+            return {
+                token: generatorToken(site.userid)
+            }
         } else {
-            throw CODE.adminUserNoExist
+            throw CODE.loginFailer
         }
     }
 }
