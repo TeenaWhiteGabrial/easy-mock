@@ -27,6 +27,18 @@ const routerList = [
     method: methodType.POST,
     action: userController.getMenus,
   },
+  /** 获取用户列表 */
+  {
+    path: `/user/list`,
+    method: methodType.POST,
+    action: userController.getUserList,
+  },
+  /** 获取角色列表 */
+  {
+    path: `/role/list`,
+    method: methodType.POST,
+    action: userController.getUserList,
+  },
 ]
 
 routerList.forEach((route) => {

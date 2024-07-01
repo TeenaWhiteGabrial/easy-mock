@@ -32,6 +32,19 @@ class UserController {
         ctx.body = await this.service.getMenus(userinfo?.roles)
         return next()
     }
+    getUserList = async (ctx: Context, next: Next) => {
+        const { gender, username, pageNo, pageSize } = ctx.request.body
+        const { list, count } = await this.service.getUserList(gender, username, pageNo, pageSize)
+
+        ctx.body = {
+            pageData: list,
+            total: count
+        }
+        return next()
+    }
+    getRoleList = async (ctx: Context, next: Next) => {
+        // const res = await this.service.getRoleList()
+    }
 }
 
 export default new UserController();

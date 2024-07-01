@@ -1,17 +1,8 @@
 import db from '../utils/pool'
 
 export default class UserService {
-  async insertUser(userInfo: any) {
-    const cl = db.collection('user-info');
-    const res = await cl.insertOne(userInfo)
-    console.log('res', res)
-    if (res.acknowledged) {
-      return '插入成功'
-    } else {
-      return `插入失败`
-    }
-  }
-  /** 按照ID查询用户信息 */
+
+  /** 根据ID查询用户信息 */
   async getUserInfo(id: string) {
     const cl = db.collection('user-info');
     const user = await cl.findOne({
@@ -51,7 +42,7 @@ export default class UserService {
 
   /** 根据用户权限查询菜单 */
   async getMenus(role: string) {
-    const cl = db.collection('role-info')
+    const cl = db.collection('menu-info')
     const cursor = cl.find({
       roles: { $all: [role] },
       type: 'MENU'
@@ -63,5 +54,41 @@ export default class UserService {
 
     const res = await cursor.toArray()
     return res
+  }
+
+  /** 获取用户列表 */
+  async getUserList(gender: string, username: string, pageNo: number = 1, pageSize: number = 10) {
+    const cl = db.collection('user-info');
+    let param: any = {}
+    if (gender) {
+      param.gender = gender
+      param.username = username
+    }
+    const cursor = cl.find(param, {
+      projection: { id: 1, username: 1, nickName: 1, roles: 1, gender: 1, avatar: 1, address: 1, email: 1, _id: 0 }
+    }).skip(pageSize * (pageNo - 1)).limit(pageSize)
+    const list = await cursor.toArray()
+    const count = await cl.countDocuments()
+    return { list, count }
+  }
+
+  /** 新增用户 */
+  async insertUser(userInfo: any) {
+    const cl = db.collection('user-info');
+    const res = await cl.insertOne(userInfo)
+    console.log('res', res)
+    if (res.acknowledged) {
+      return '插入成功'
+    } else {
+      return `插入失败`
+    }
+  }
+
+  /** 获取角色列表 */
+  async getRoleList(param: any) {
+    const cl = db.collection('role-info');
+    const cursor = cl.find(param, {
+      projection: {}
+    })
   }
 } 
