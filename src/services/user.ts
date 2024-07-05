@@ -1,16 +1,27 @@
+
 import db from '../utils/pool'
 
 export default class UserService {
 
-  /** 根据ID查询用户信息 */
-  async getUserInfo(id: string) {
+  /** 根据ID查询用户详细信息 */
+  async getAllUserInfo(id: string) {
     const cl = db.collection('user-info');
     const user = await cl.findOne({
-      id: id
+      userId: id
     }, {
-      projection: { id: 1, username: 1, nickName: 1, roles: 1, gender: 1, avatar: 1, address: 1, email: 1, _id: 0 }
+      projection: { userId: 1, userName: 1, avatar: 1, displayName: 1, gender: 1, email: 1, department: 1, role: 1, description: 1, status: 1, identity: 1, level: 1, _id: 0 }
     })
+    return user || null
+  }
 
+  /** 根据ID查询用户简易信息 */
+  async getSimpleUserInfo(id: string) {
+    const cl = db.collection('user-info');
+    const user = await cl.findOne({
+      userId: id
+    }, {
+      projection: { userId: 1, userName: 1, avatar: 1, displayName: 1, department: 1, role: 1, _id: 0 }
+    })
     return user || null
   }
 
@@ -18,7 +29,7 @@ export default class UserService {
   async deleteUser(id: string) {
     const cl = db.collection('user-info');
     const res = await cl.deleteOne({
-      userId: id
+      userId: parseInt(id)
     })
     if (res.acknowledged && res.deletedCount > 0) {
       return '删除成功'
@@ -31,7 +42,7 @@ export default class UserService {
   async updateUser(id: string, userInfo: any) {
     const cl = db.collection('user-info');
     const res = await cl.updateOne({
-      userId: id
+      userId: parseInt(id)
     }, { $set: userInfo })
     if (res.acknowledged) {
       return `更新成功,共影响${res.modifiedCount}条数据`
@@ -46,26 +57,20 @@ export default class UserService {
     const cursor = cl.find({
       roles: { $all: [role] },
       type: 'MENU'
-    }
-      , {
-        projection: { roles: 1, name: 1, code: 1, parentId: 1, path: 1, redirect: 1, icon: 1, component: 1, layout: 1, keepAlive: 1, method: 1, description: 1, show: 1, enable: 1, order: 1, children: 1, type: 1 }
-      }
-    )
+    }, {
+      projection: { roles: 1, name: 1, code: 1, parentId: 1, path: 1, redirect: 1, icon: 1, component: 1, layout: 1, keepAlive: 1, method: 1, description: 1, show: 1, enable: 1, order: 1, children: 1, type: 1 }
+    })
 
     const res = await cursor.toArray()
     return res
   }
 
   /** 获取用户列表 */
-  async getUserList(gender: string, username: string, pageNo: number = 1, pageSize: number = 10) {
+  async getUserList(param: any, pageNo: number = 1, pageSize: number = 10) {
     const cl = db.collection('user-info');
-    let param: any = {}
-    if (gender) {
-      param.gender = gender
-      param.username = username
-    }
+
     const cursor = cl.find(param, {
-      projection: { id: 1, username: 1, nickName: 1, roles: 1, gender: 1, avatar: 1, address: 1, email: 1, _id: 0 }
+      projection: { userId: 1, userName: 1, displayName: 1, role: 1, gender: 1, avatar: 1, department: 1, email: 1, status: 1, enable: 1, _id: 0 }
     }).skip(pageSize * (pageNo - 1)).limit(pageSize)
     const list = await cursor.toArray()
     const count = await cl.countDocuments()
@@ -74,10 +79,22 @@ export default class UserService {
 
   /** 新增用户 */
   async insertUser(userInfo: any) {
+    const configcl = db.collection('site-info');
+    const configInfo = await configcl.findOne()
+    const maxId = configInfo?.maxId ?? 0;
+
+
+    userInfo.userId = maxId + 1
     const cl = db.collection('user-info');
     const res = await cl.insertOne(userInfo)
-    console.log('res', res)
     if (res.acknowledged) {
+      await configcl.updateOne({
+        maxId
+      }, {
+        $set: {
+          maxId: maxId + 1
+        }
+      })
       return '插入成功'
     } else {
       return `插入失败`
@@ -85,10 +102,16 @@ export default class UserService {
   }
 
   /** 获取角色列表 */
-  async getRoleList(param: any) {
+  async getRoleList(enable: boolean) {
     const cl = db.collection('role-info');
+    let param: { enable?: boolean } = {}
+    if (enable === true || enable === false) {
+      param.enable = enable
+    }
     const cursor = cl.find(param, {
-      projection: {}
+      projection: { id: 1, code: 1, name: 1, enable: 1 }
     })
+    const res = await cursor.toArray()
+    return res
   }
 } 

@@ -4,17 +4,17 @@ import { generatorToken } from "../utils/util";
 
 export default class SiteService {
     /** 查询用户名和密码 */
-    async checkCertification(username: string, password: string) {
+    async checkCertification(userName: string, password: string) {
         const cl = db.collection('user-info');
-        const site = await cl.findOne({
-            username,
+        const user = await cl.findOne({
+            userName,
             password
         }, {
-            projection: { userid: 1 }
+            projection: { userId: 1 }
         })
-        if (site) {
+        if (user) {
             return {
-                token: generatorToken(site.userid)
+                token: generatorToken(user.userId)
             }
         } else {
             throw CODE.loginFailer

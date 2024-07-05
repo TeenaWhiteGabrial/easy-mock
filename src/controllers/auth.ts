@@ -5,8 +5,8 @@ class UserController {
     private service: AuthService = new AuthService()
     /** 验证用户名密码 */
     checkAuth = async (ctx: Context, next: Next) => {
-        const { username, password } = ctx.request.body
-        const res = await this.service.checkCertification(username, password)
+        const { userName, password } = ctx.request.body
+        const res = await this.service.checkCertification(userName, password)
         ctx.body = res
         return next()
     };

@@ -15,15 +15,21 @@ const routerList = [
     method: methodType.POST,
     action: authController.logout,
   },
-  /** 获取用户信息 */
+  /** 获取简单用户信息 */
   {
-    path: `/user/info`,
-    method: methodType.POST,
-    action: userController.getUser,
+    path: `/user/info/simple`,
+    method: methodType.GET,
+    action: userController.getSimpleUser,
   },
-  /** 获取角色权限菜单 */
+  /** 获取全部用户资料 */
   {
-    path: `/user/roles/menus`,
+    path: `/user/info/all`,
+    method: methodType.POST,
+    action: userController.getAllUser,
+  },
+  /** 获取路由菜单 */
+  {
+    path: `/user/menus`,
     method: methodType.POST,
     action: userController.getMenus,
   },
@@ -33,12 +39,30 @@ const routerList = [
     method: methodType.POST,
     action: userController.getUserList,
   },
+  /** 修改用户资料 */
+  {
+    path: `/user/update/:userid`,
+    method: methodType.POST,
+    action: userController.updateUser,
+  },
   /** 获取角色列表 */
   {
     path: `/role/list`,
     method: methodType.POST,
-    action: userController.getUserList,
+    action: userController.getRoleList,
   },
+  /** 新建用户 */
+  {
+    path: `/user/add`,
+    method: methodType.POST,
+    action: userController.addUser,
+  },
+  /** 删除用户 */
+  {
+    path: `/user/delete/:userId`,
+    method: methodType.POST,
+    action: userController.deleteUser,
+  }
 ]
 
 routerList.forEach((route) => {

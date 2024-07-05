@@ -10,12 +10,7 @@ export const ENV = {
 export const DATABASE = {
   // 本地环境
   development: {
-    // dbName: "easy-mock",
-    // user: "topaz",
-    // password: "iip2021A%3Fptjsb",
-    // host: "localhost",
-    // port: 27017,
-    dbName: "easy-mock",
+    dbName: "StarPeaceCompany",
     user: "topaz",
     password: "ipcMasterTopazzz",
     host: "8.149.128.69",
@@ -24,7 +19,7 @@ export const DATABASE = {
 
   // 阿里云环境
   production: {
-    dbName: "easy-mock",
+    dbName: "StarPeaceCompany",
     user: "topaz",
     password: "ipcMasterTopazzz",
     host: "8.149.128.69",
