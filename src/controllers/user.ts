@@ -43,19 +43,36 @@ class UserController {
         }
         return next()
     }
+    /** 获取菜单 */
     getMenus = async (ctx: Context, next: Next) => {
         const userinfo = await this.service.getAllUserInfo(ctx.userId)
 
         ctx.body = await this.service.getMenus(userinfo?.role)
         return next()
     }
+    /** 获取角色列表 */
     getRoleList = async (ctx: Context, next: Next) => {
-        const { enabled } = ctx.request.body
-        const res = await this.service.getRoleList(enabled)
+        const { param } = ctx.request.body
+        const res = await this.service.getRoleList(param)
         ctx.body = res
         return next()
     }
-
+    /** 自己修改密码，需要验证原密码 */
+    changePassword = async (ctx: Context, next: Next) => {
+        const userId = ctx.userId
+        const { oldPassword, newPassword } = ctx.request.body
+        const res = await this.service.changePassword(userId, oldPassword, newPassword)
+        ctx.body = res
+        return next()
+    }
+    /** 重置他人密码，需要验证权限 */
+    resetPassword = async (ctx: Context, next: Next) => {
+        const currentUserId = ctx.userId
+        const { userId, password } = ctx.request.body
+        const res = await this.service.resetPassword(currentUserId, userId, password)
+        ctx.body = res
+        return next()
+    }
 }
 
 export default new UserController();

@@ -62,7 +62,19 @@ const routerList = [
     path: `/user/delete/:userId`,
     method: methodType.POST,
     action: userController.deleteUser,
-  }
+  },
+  /** 修改密码 */
+  {
+    path: `/user/changePassword`,
+    method: methodType.POST,
+    action: userController.changePassword,
+  },
+  /** 重置密码 */
+  {
+    path: `/user/resetPassword`,
+    method: methodType.POST,
+    action: userController.resetPassword,
+  },
 ]
 
 routerList.forEach((route) => {

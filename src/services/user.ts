@@ -1,5 +1,6 @@
 
 import db from '../utils/pool'
+import { CODE } from "../config/code";
 
 export default class UserService {
 
@@ -102,16 +103,64 @@ export default class UserService {
   }
 
   /** 获取角色列表 */
-  async getRoleList(enable: boolean) {
+  async getRoleList(param: any) {
     const cl = db.collection('role-info');
-    let param: { enable?: boolean } = {}
-    if (enable === true || enable === false) {
-      param.enable = enable
-    }
     const cursor = cl.find(param, {
       projection: { id: 1, code: 1, name: 1, enable: 1 }
     })
     const res = await cursor.toArray()
     return res
+  }
+
+  /** 修改密码 */
+  async changePassword(userId: string, oldPassword: string, newPassword: string) {
+    const cl = db.collection('user-info')
+    const userInfo = await cl.findOne({
+      userId
+    }, {
+      projection: { password: 1 }
+    })
+    if (userInfo && userInfo.password === oldPassword) {
+      await cl.updateOne({
+        userId
+      }, {
+        $set: {
+          password: newPassword
+        }
+
+      })
+      return '密码修改成功！'
+    } else {
+      throw {
+        code: 400,
+        msg: '原密码不匹配，请检查'
+      }
+    }
+  }
+
+  /** 重置指定用户的密码 */
+  async resetPassword(currentUserId: string, userId: string, password: string) {
+    const cl = db.collection('user-info')
+    const userInfo = await cl.findOne({
+      userId: currentUserId
+    }, {
+      projection: { role: 1, default: 1 }
+    })
+    if (userInfo && userInfo.role === 'Charge') {
+      await cl.updateOne({
+        userId
+      }, {
+        $set: {
+          password
+        }
+
+      })
+      return '密码重置成功'
+    } else {
+      throw {
+        code: CODE.buinessError,
+        msg: '权限不足'
+      }
+    }
   }
 } 
