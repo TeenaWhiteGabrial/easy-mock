@@ -82,34 +82,23 @@ export default class UserService {
   async insertUser(userInfo: any) {
     const configcl = db.collection('site-info');
     const configInfo = await configcl.findOne()
-    const maxId = configInfo?.maxId ?? 0;
+    const maxUserId = configInfo?.maxUserId ?? 0;
 
-
-    userInfo.userId = maxId + 1
+    userInfo.userId = maxUserId + 1
     const cl = db.collection('user-info');
     const res = await cl.insertOne(userInfo)
     if (res.acknowledged) {
       await configcl.updateOne({
-        maxId
+        maxUserId
       }, {
         $set: {
-          maxId: maxId + 1
+          maxUserId: maxUserId + 1
         }
       })
       return '插入成功'
     } else {
       return `插入失败`
     }
-  }
-
-  /** 获取角色列表 */
-  async getRoleList(param: any) {
-    const cl = db.collection('role-info');
-    const cursor = cl.find(param, {
-      projection: { id: 1, code: 1, name: 1, enable: 1 }
-    })
-    const res = await cursor.toArray()
-    return res
   }
 
   /** 修改密码 */
@@ -162,5 +151,96 @@ export default class UserService {
         msg: '权限不足'
       }
     }
+  }
+
+  /** 获取角色列表 */
+  async getRoleList(param: any) {
+    const cl = db.collection('role-info');
+    const cursor = cl.find(param, {
+      projection: { id: 1, code: 1, name: 1, enable: 1 }
+    })
+    const res = await cursor.toArray()
+    return res
+  }
+
+  /** 新建角色 */
+  async addRole(code: string, name: string) {
+    const cl = db.collection('role-info');
+    const findCodeRes = await cl.findOne({
+      code
+    })
+    if (findCodeRes && findCodeRes.length > 0) {
+      throw {
+        code: 400,
+        msg: 'code重复'
+      }
+    } else {
+      const res = await cl.insertOne({
+        code, name
+      })
+      if (res.acknowledged) {
+        return '角色新增成功'
+      } else {
+        throw CODE.operateFail
+      }
+    }
+
+  }
+
+  /** 修改角色 */
+  async updateRole(code: string, name: string) {
+    const cl = db.collection('role-info');
+    const res = await cl.updateOne({
+      code
+    }, {
+      $set: {
+        code, name
+      }
+    })
+    if (res.acknowledged) {
+      return `更新成功,共影响${res.modifiedCount}条数据`
+    } else {
+      throw CODE.operateFail
+    }
+  }
+
+  /** 删除角色 */
+  async deleteRole(code: string) {
+    const cl = db.collection('role-info');
+    const res = await cl.deleteOne({
+      code
+    })
+    if (res.acknowledged && res.deletedCount > 0) {
+      return '删除成功'
+    } else {
+      throw CODE.operateFail
+    }
+  }
+
+  /** 获取资源菜单树 */
+  async getMenuTree() {
+    const cl = db.collection('menu-info')
+    const cursor = cl.find({})
+    const res = await cursor.toArray()
+    return res
+  }
+
+  /** 获取资源按钮 */
+  async getButtons() {
+    return []
+  }
+
+  /** 增加资源菜单 */
+  async addPermission() {
+    return '添加成功'
+  }
+
+  /** 修改资源菜单 */
+  async updatePermission() {
+    return '修改成功'
+  }
+
+  async deletePermission() {
+    return '删除成功'
   }
 } 

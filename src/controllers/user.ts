@@ -50,13 +50,6 @@ class UserController {
         ctx.body = await this.service.getMenus(userinfo?.role)
         return next()
     }
-    /** 获取角色列表 */
-    getRoleList = async (ctx: Context, next: Next) => {
-        const { param } = ctx.request.body
-        const res = await this.service.getRoleList(param)
-        ctx.body = res
-        return next()
-    }
     /** 自己修改密码，需要验证原密码 */
     changePassword = async (ctx: Context, next: Next) => {
         const userId = ctx.userId
@@ -70,6 +63,71 @@ class UserController {
         const currentUserId = ctx.userId
         const { userId, password } = ctx.request.body
         const res = await this.service.resetPassword(currentUserId, userId, password)
+        ctx.body = res
+        return next()
+    }
+
+    /** 获取角色列表 */
+    getRoleList = async (ctx: Context, next: Next) => {
+        const { params } = ctx.request.body
+        const res = await this.service.getRoleList(params)
+        ctx.body = res
+        return next()
+    }
+    /** 新建角色 */
+    addRole = async (ctx: Context, next: Next) => {
+        const { code, name } = ctx.request.body
+        const res = await this.service.addRole(code, name)
+        ctx.body = res
+        return next()
+    }
+    /** 修改角色 */
+    updateRole = async (ctx: Context, next: Next) => {
+        const { code, name } = ctx.request.body
+        const res = await this.service.updateRole(code, name)
+        ctx.body = res
+        return next()
+    }
+
+    /** 删除角色 */
+    deleteRole = async (ctx: Context, next: Next) => {
+        const roleCode = ctx.params.roleCode
+        const res = await this.service.deleteRole(roleCode)
+        ctx.body = res
+        return next()
+    }
+
+    /** 获取权限菜单 */
+    getMenuTree = async (ctx: Context, next: Next) => {
+        const res = await this.service.getMenuTree()
+        ctx.body = res
+        return next()
+    }
+
+    /** 获取按钮列表 */
+    getButtons = async (ctx: Context, next: Next) => {
+        const res = await this.service.getButtons()
+        ctx.body = res
+        return next()
+    }
+
+    /** 增加权限菜单 */
+    addPermission = async (ctx: Context, next: Next) => {
+        const res = await this.service.addPermission()
+        ctx.body = res
+        return next()
+    }
+
+    /** 修改权限菜单 */
+    updatePermission = async (ctx: Context, next: Next) => {
+        const res = await this.service.updatePermission()
+        ctx.body = res
+        return next()
+    }
+
+    /** 删除权限菜单 */
+    deletePermission = async (ctx: Context, next: Next) => {
+        const res = await this.service.deletePermission()
         ctx.body = res
         return next()
     }

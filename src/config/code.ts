@@ -13,4 +13,8 @@ export const CODE = {
     msg: "用户名密码不匹配"
   },
   illegalRequest: { code: 4, msg: "非法请求", key: "illegalRequest" },
+  operateFail: {
+    code: 400,
+    msg: '操作失败'
+  }
 };

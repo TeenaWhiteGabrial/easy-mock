@@ -45,12 +45,6 @@ const routerList = [
     method: methodType.POST,
     action: userController.updateUser,
   },
-  /** 获取角色列表 */
-  {
-    path: `/role/list`,
-    method: methodType.POST,
-    action: userController.getRoleList,
-  },
   /** 新建用户 */
   {
     path: `/user/add`,
@@ -74,6 +68,61 @@ const routerList = [
     path: `/user/resetPassword`,
     method: methodType.POST,
     action: userController.resetPassword,
+  },
+
+  /** 获取角色列表 */
+  {
+    path: `/role/list`,
+    method: methodType.POST,
+    action: userController.getRoleList,
+  },
+  /** 新建角色 */
+  {
+    path: `/role/add`,
+    method: methodType.POST,
+    action: userController.addRole,
+  },
+  /** 修改角色 */
+  {
+    path: `/role/update`,
+    method: methodType.POST,
+    action: userController.updateRole,
+  },
+  /** 删除角色 */
+  {
+    path: `/role/delete/:roleCode`,
+    method: methodType.POST,
+    action: userController.deleteRole,
+  },
+  /** 获取菜单树 */
+  {
+    path: `/permission/menu/tree`,
+    method: methodType.GET,
+    action: userController.getMenuTree,
+  },
+  /** 获取按钮 */
+  {
+    path: `/permission/button/:permissionId`,
+    method: methodType.GET,
+    action: userController.getButtons,
+  },
+  /** 新增资源 */
+  {
+    path: `/permission/add`,
+    method: methodType.POST,
+    action: userController.addPermission,
+  },
+  /** 修改资源 */
+  {
+    path: `/permission/update`,
+    method: methodType.POST,
+    action: userController.updatePermission,
+  },
+  /** 删除资源 */
+  {
+    path: `/permission/delete/:permissionId`,
+    method: methodType.POST,
+    action: userController.deletePermission,
   },
 ]
 
