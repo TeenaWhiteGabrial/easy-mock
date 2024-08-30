@@ -1,25 +1,8 @@
 version: '3.8' # 指定使用的 Docker Compose 文件格式的版本
 
 services:
-  app:
-    build: . # 从当前目录（即包含 docker-compose.yml 文件的目录）中的 Dockerfile 构建镜像。
-    container_name: topaz-app # 容器名称
-    ports:
-      - "3100:8080" # 主机3100端口映射容器内的8080端口
-    depends_on:
-      - mongo
-    environment:
-      NODE_ENV: production # 制定生产环境
-      MONGO_USER: topaz
-      MONGO_PASSWORD: ipcMasterTopazzz # 使用密码文件
-      MONGO_HOST: mongodb  # 使用mongo的容器名
-      MONGO_PORT: 27017
-      MONGO_DB_NAME: easy-mock
-    volumes:
-      - .:/usr/src/app # 绑定挂载，目录映射。将当前目录（即包含 docker-compose.yml 文件的目录）挂载到容器内的 /usr/src/app 目录
-
   mongo:
-    image: mongo:6.0.2 # 会自动下载并安装配置文件中指定的镜像
+    image: registry.cn-hangzhou.aliyuncs.com/misaka-images/mongo:6.0.2 # 会自动下载并安装配置文件中指定的镜像
     container_name: mongodb
     ports:
       - "27017:27017"
@@ -28,5 +11,5 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ipcMasterTopazzz
     volumes:
       - mongo-data:/data/db # 命名卷。Docker 会自动在主机上创建并管理这个卷，并将其挂载到容器内的 /data/db 目录。
-volumes:
+volumes: 
   mongo-data: # 定义命名卷。这个卷在主机上，但是在容器的管理之下。即使容器被删除，卷中的数据依然存在，可以在新容器中重新挂载使用。

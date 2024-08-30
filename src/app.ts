@@ -22,8 +22,8 @@ app.use(errorHandler);
 app.use(koaBody({ multipart: true }));
 
 // 加载路由
-app.use(privateRouter.routes()).use(privateRouter.allowedMethods()); // 加载路由
-app.use(openRouter.routes()).use(openRouter.allowedMethods()); // 加载路由
+app.use(privateRouter.routes()).use(privateRouter.allowedMethods()); // 管理端接口，需要校验token
+app.use(openRouter.routes()).use(openRouter.allowedMethods()); // 公共开放接口
 
 // 请求response处理
 app.use(responseHandler);

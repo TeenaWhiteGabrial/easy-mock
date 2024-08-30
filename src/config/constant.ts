@@ -13,7 +13,7 @@ export const DATABASE = {
     dbName: "StarPeaceCompany",
     user: "topaz",
     password: "ipcMasterTopazzz",
-    host: "8.149.128.69",
+    host: "39.105.212.130",
     port: 27017,
   },
 
@@ -22,7 +22,7 @@ export const DATABASE = {
     dbName: "StarPeaceCompany",
     user: "topaz",
     password: "ipcMasterTopazzz",
-    host: "8.149.128.69",
+    host: "39.105.212.130",
     port: 27017,
   },
 };
@@ -71,5 +71,7 @@ export const WX_MINI = {
 
 // 全局参数
 export const FIXED_KEY = {
-  port: 8080,
+  port: 9090,
 };
+
+// 日志参数

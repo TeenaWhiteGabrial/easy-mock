@@ -15,7 +15,6 @@ class UserController {
         ctx.body = '退出成功'
         return next()
     };
-
 }
 
 export default new UserController();

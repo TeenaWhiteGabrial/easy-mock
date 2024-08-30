@@ -1,7 +1,7 @@
 # 定义变量
 GIT_REPO="https://github.com/TeenaWhiteGabrial/easy-mock.git"
 APP_DIR="/usr/src/code/easy-mock"
-APP_BRANCH="v1.0"
+APP_BRANCH="naive"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 APP_PORT=3100  # 你的应用服务端口
 MONGO_PORT=27017  # MongoDB服务端口
