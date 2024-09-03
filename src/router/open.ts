@@ -1,4 +1,4 @@
-import siteController from "../controllers/site"
+import siteController from "../controllers/qwen"
 import koaRouter from "koa-router";
 import { methodType } from "./enum"
 
@@ -7,11 +7,11 @@ const router = new koaRouter();
 const type = "/open";
 
 const routerList = [
-  /** 获取网站信息 */
+  /** websocket通信 */
   {
-    path: `${type}/site/info`,
+    path: `${type}/ai/getMessage`,
     method: methodType.GET,
-    action: siteController.getSite,
+    action: siteController.getMessage,
   },
 ]
 

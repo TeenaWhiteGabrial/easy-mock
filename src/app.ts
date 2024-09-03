@@ -1,43 +1,30 @@
-import Koa from "koa";
-import http from "http";
-import koaBody from "koa-body";
-import { getIpAddress } from "./utils/util";
-import { loggerMiddleware } from "./log/log";
-import { FIXED_KEY } from "./config/constant";
-import { privateRouter, publicRouter, openRouter } from "./router";
-import { errorHandler, responseHandler } from "./middleware/response";
+import { WebSocketServer } from 'ws';
+import OpenAI from "openai";
 
-const app = new Koa();
-// 日志中间件
-app.use(loggerMiddleware);
+const openai = new OpenAI(
+  {
+    apiKey: 'sk-1c1c01b87ba84bfabee4861bd04f4bcd',
+    baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+  }
+)
 
-// 错误处理
-app.use(errorHandler);
+const wss = new WebSocketServer({port:8080})
 
-// koaBody,处理请求的中间件
-app.use(koaBody({ multipart: true }));
-
-// 加载路由
-app.use(publicRouter.routes()).use(publicRouter.allowedMethods()); // 公共路由
-app.use(privateRouter.routes()).use(privateRouter.allowedMethods()); // 权限路由
-app.use(openRouter.routes()).use(openRouter.allowedMethods()); // 公开路由
-
-// 请求response处理
-app.use(responseHandler);
-
-const port = FIXED_KEY.port;
-
-const server = http.createServer(app.callback());
-
-server.listen(port);
-
-server.on("error", (err: Error) => {
-  console.log(err);
-});
-
-server.on("listening", () => {
-  const ip = getIpAddress();
-  const address = `http://${ip}:${port}`;
-  const localAddress = `http://localhost:${port}`;
-  console.log(`app started at address \n\n${localAddress}\n\n${address}`);
-});
+wss.on('connection',(ws)=>{
+    console.log('connect successful!')
+    ws.on('message', async (message: Array<Buffer>) => {
+      const msg = message.toString()
+      const stream = await openai.chat.completions.create({
+        messages: [
+          { role: "system", content: "You are a helpful assistant." },
+          { role: "user", content: msg }
+        ],
+        model: "qwen-max",
+        stream: true
+      })
+      for await (const chunk of stream) {
+        ws.send(chunk.choices[0]?.delta?.content || '')
+      }
+    })
+    ws.send('Nice to meet you!')
+})

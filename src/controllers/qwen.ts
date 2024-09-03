@@ -1,11 +1,11 @@
 import { Context, Next } from "koa"
-import SiteService from '../services/site'
+import SiteService from '../services/qwen'
 
 class UserController {
     private service: SiteService = new SiteService()
-    getSite = async (ctx: Context, next: Next) => {
+    getMessage = async (ctx: Context, next: Next) => {
         const host = 'localhost:3000'
-        const res = await this.service.getSiteInfo(host)
+        const res = await this.service.getOpenAIMessage()
         ctx.body = res
         return next()
     }
