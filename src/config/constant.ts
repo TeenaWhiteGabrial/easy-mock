@@ -71,7 +71,7 @@ export const WX_MINI = {
 
 // 全局参数
 export const FIXED_KEY = {
-  port: 9090,
+  port: 8080,
 };
 
 // 日志参数
