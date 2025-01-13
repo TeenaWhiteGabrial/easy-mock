@@ -1,5 +1,8 @@
 import authController from "../controllers/auth";
 import userController from "../controllers/user";
+import qiniuController from "../controllers/qiniu";
+import timeController from "../controllers/time"
+
 import koaRouter from "koa-router";
 import { methodType } from "../type/enum"
 import { jwtMiddlewareDeal, platformMiddlewareDeal } from "../middleware/jwt";
@@ -123,6 +126,19 @@ const routerList = [
     path: `/permission/delete/:permissionId`,
     method: methodType.POST,
     action: userController.deletePermission,
+  },
+
+  /** 七牛云获取上传凭证 */
+  {
+    path: `/upload/getUploadToken`,
+    method: methodType.GET,
+    action: qiniuController.getUploadToken,
+  },
+  /** 获取下一个休息日的信息 */
+  {
+    path: `/holiday/nextHoliday/:date`,
+    method: methodType.GET,
+    action: timeController.getNextHolidayInfo
   },
 ]
 

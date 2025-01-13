@@ -43,12 +43,16 @@ export default class UserService {
   async updateUser(id: string, userInfo: any) {
     const cl = db.collection('user-info');
     const res = await cl.updateOne({
-      userId: parseInt(id)
+      userId: id
     }, { $set: userInfo })
-    if (res.acknowledged) {
-      return `更新成功,共影响${res.modifiedCount}条数据`
-    } else {
+
+    if (!res.acknowledged) {
       return `更新失败,查询到${res.matchedCount}条匹配数据`
+
+    } else if (res.modifiedCount === 0) {
+      return `更新失败,没有符合条件的数据`
+    } else {
+      return `更新成功,共影响${res.modifiedCount}条数据`
     }
   }
 

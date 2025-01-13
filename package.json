@@ -9,7 +9,7 @@
     "build": "rimraf dist && tsup src/app.ts --dts --format cjs,esm",
     "start": "node dist/app.js",
     "test": "pm2 start dist/app.js --only test",
-    "prod": "pm2 start dist/app.js --only production",
+    "prod": "pm2 start dist/app.js --only production --name naive-admin-service",
     "stop": "pm2 stop dist/app.js",
     "delete": "pm2 delete dist/app.js",
     "list": "pm2 list",
@@ -32,6 +32,7 @@
     "mime-types": "^2.1.35",
     "mongodb": "^6.7.0",
     "pm2": "^5.3.0",
+    "qiniu": "^7.14.0",
     "qs": "^6.11.2"
   },
   "devDependencies": {

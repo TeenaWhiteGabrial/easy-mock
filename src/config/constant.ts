@@ -33,14 +33,6 @@ export const JWT = {
   expires: 60 * 60 * 24 * 30, // 30天
 };
 
-// sms短信配置
-export const SMS = {
-  accessKeyId: "x",
-  accessKeySecret: "x",
-  signName: "x",
-  templateCode: "x",
-};
-
 // 平台Map
 export const PLATFORM = {
   wxMini: "微信小程序",
@@ -52,26 +44,18 @@ export const PLATFORM = {
 };
 
 
-// 支付配置
-export const PAY = {
-  wx: {
-    miniAppid: "x",
-    h5Appid: "x",
-    mchid: "x",
-    v3Key: "x", //https://pay.weixin.qq.com/index.php/core/cert/api_cert#/api-password-v3
-  },
-};
-
-// 支付方式配置
-export const PAY_TYPE = [{ label: "微信小程序支付", value: 1 }];
-export const WX_MINI = {
-  appid: "x",
-  secret: "x",
-};
-
 // 全局参数
 export const FIXED_KEY = {
-  port: 8080,
+  port: 9090,
 };
+
+// 七牛上传参数
+export const QINIU = {
+  accessKey: 'ONiGLrLxZ2zTRQVDECDAy57fMz4cLGon93hrp1ca',
+  secretKey: 'mOIIU8JaAeTp-JWnacVhQTEg9o8BAySmKlAuBLO4',
+  bucketName: 'topazzz',
+  uploadUrl: 'http://qiniu.tenmagabrielwhite.cn', // 空间地址
+  expires: 7200, // 凭证有效期，单位是秒
+}
 
 // 日志参数
