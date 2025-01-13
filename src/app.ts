@@ -3,34 +3,26 @@ import OpenAI from "openai";
 
 const openai = new OpenAI(
   {
-    apiKey: 'sk-1c1c01b87ba84bfabee4861bd04f4bcd',
-    baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1"
+    apiKey: 'sk-caba1a0e93254c6a970547eb8647c807',
+    baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1",
   }
 )
 
-const wss = new WebSocketServer({ port: 8080 })
+const wss = new WebSocketServer({ port: 8080, path:'/getAphorism' })
 
 wss.on('connection', (ws) => {
   console.log('connect successful!')
   ws.on('message', async (message: Array<Buffer>) => {
     const msg = message.toString()
-    const stream = openai.beta.chat.completions.stream({
+
+    const completion = await openai.chat.completions.create({
+      model: "qwen-plus-latest",  //模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
       messages: [
-        { role: "system", content: "You are a helpful assistant." },
+        { role: "system", content: "你擅长古诗词句，根据给出的历史人物名字，随机生成这个人物作的一句诗词。诗词不允许重复。不需要解释。我的历史人物名字是：${keyword}" },
         { role: "user", content: msg }
       ],
-      model: "qwen-max",
-      stream: true
-    })
+    });
 
-    for await (const chunk of stream) {
-      const fin = chunk.choices[0]?.finish_reason;
-      if (fin && fin === 'stop') { // 说完了
-        ws.send(chunk.choices[0]?.delta?.content || '', { fin: true })
-      } else {
-        ws.send(chunk.choices[0]?.delta?.content || '')
-      }
-    }
+    ws.send(JSON.stringify(completion.choices[0].message.content))
   })
-  ws.send('Nice to meet you!')
 })
