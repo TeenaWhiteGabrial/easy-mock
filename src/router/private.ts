@@ -2,6 +2,7 @@ import authController from "../controllers/auth";
 import userController from "../controllers/user";
 import qiniuController from "../controllers/qiniu";
 import timeController from "../controllers/time"
+import aiController from "../controllers/ai"
 
 import koaRouter from "koa-router";
 import { methodType } from "../type/enum"
@@ -139,6 +140,12 @@ const routerList = [
     path: `/holiday/nextHoliday/:date`,
     method: methodType.GET,
     action: timeController.getNextHolidayInfo
+  },
+  /** 使用AI获取古诗词 */
+  {
+    path: `/ai/getVerse`,
+    method: methodType.POST,
+    action: aiController.getVerse
   },
 ]
 
