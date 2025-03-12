@@ -43,7 +43,9 @@ class TaskController {
      * @returns
      */
     getTaskDetail = async (ctx: Context, next: Next) => {
-
+        const res = await this.service.getTaskDetail(ctx.request.body)
+        ctx.body = res
+        return next()
     }
 }
 
