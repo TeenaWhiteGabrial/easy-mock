@@ -15,7 +15,7 @@ router.use(jwtMiddlewareDeal);
 const routerList = [
   /** 登出 */
   {
-    path: `/auth/logout`,
+    path: `/private/auth/logout`,
     method: methodType.POST,
     action: authController.logout,
   },

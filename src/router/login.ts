@@ -2,7 +2,11 @@ import authController from "../controllers/auth";
 import koaRouter from "koa-router";
 import { methodType } from "../type/enum"
 
-const router = new koaRouter();
+const router = new koaRouter(
+  // {
+  //   prefix: '/open'
+  // }
+);
 /** 开放接口，不需要token */
 
 const routerList = [
